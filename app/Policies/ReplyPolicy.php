@@ -43,9 +43,9 @@ class ReplyPolicy
   /**
    * Determine whether the user can delete the model.
    */
-  public function delete(User $user, Reply $reply): bool
+  public function delete(User $user, Reply $reply)
   {
-    return $reply->user->id === $user->id;
+    return $reply->user()->is($user) ? Response::allow() : Response::deny('You can not delete this reply');
   }
 
   /**

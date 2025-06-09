@@ -43,9 +43,9 @@ class CommentPolicy
   /**
    * Determine whether the user can delete the model.
    */
-  public function delete(User $user, Comment $comment): bool
+  public function delete(User $user, Comment $comment)
   {
-    return $comment->user->id === $user->id;
+    return $comment->user()->is($user) ? Response::allow() : Response::deny('You can not delete this comment');
   }
 
   /**
