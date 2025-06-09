@@ -1,8 +1,10 @@
 export default (type = 'comment') => {
   return {
     openDropdown: false,
+    loading: false,
     async removeComment(commentId){
       try{
+        this.loading = true;
         const response = await fetch(`/${type}/${commentId}`,{
           method:'DELETE',
           headers:{
@@ -17,6 +19,7 @@ export default (type = 'comment') => {
         }
 
         document.querySelector(`#${type}-${commentId}`).remove();
+       document.querySelectorAll(`[data-parent-id="${commentId}"]`).forEach(reply => reply.remove());
 
         const data = await response.json();
         alert(data.message);
@@ -27,6 +30,7 @@ export default (type = 'comment') => {
         console.log(error);
       } finally{
         this.openDropdown = false;
+        this.loading = false;
       }
     }
   }
