@@ -59,12 +59,12 @@ Route::put('/comment/{comment}', function (Comment $comment) {
   return response()->json(['message' => 'Comment updated successfully']);
 });
 
-Route::put('/reply/{reply}', function (Reply $comment) {
+Route::put('/reply/{reply}', function (Reply $reply) {
   $validated = request()->validate([
     'reply' => 'required|max:100'
   ]);
 
-  Gate::authorize('update', $comment);
+  Gate::authorize('update', $reply);
 
   return response()->json(['message' => 'Reply deleted successfully']);
 });

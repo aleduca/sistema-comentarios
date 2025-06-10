@@ -1,6 +1,9 @@
 
 @props(['reply'])
 <div x-cloak x-show="canEdit">
+   <template x-if="errorValidateEdit">
+    <div class="text-red-600 italic text-xs" x-text="errorValidateEdit"></div>
+  </template>
  <textarea id="comment" rows="6" name="comment" x-ref="comment"
         class="p-2 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800 rounded"
         placeholder="Write a comment...">

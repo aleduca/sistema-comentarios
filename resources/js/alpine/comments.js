@@ -43,6 +43,7 @@ export default (type = 'comment') => {
     },
     async updateComment(commentId){
       try{
+        this.loading = true;
         const response = await fetch(`/${type}/${commentId}`,{
           method:'PUT',
           headers:{
@@ -70,6 +71,9 @@ export default (type = 'comment') => {
           this.errorValidateEdit = error.message;
         }
         console.log(error);
+      }finally{
+        this.openDropdown = false;
+        this.loading = false;
       }
     }
   }
