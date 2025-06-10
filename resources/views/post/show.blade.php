@@ -25,7 +25,7 @@
           <div class="text-white text-sm italic">Aguarde...</div>
         </template>
         <x-reply :reply="$reply" />
-        <x-reply-edit :reply="$reply" />
+        <x-comment-edit :comment="$reply" />
     </article>
     @endforeach
     @empty

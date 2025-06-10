@@ -1,4 +1,3 @@
-
 @props(['reply'])
 <div x-cloak x-show="canEdit">
    <template x-if="errorValidateEdit">
