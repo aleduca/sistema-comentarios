@@ -44,3 +44,27 @@ Route::delete('/reply/{comment}', function (Reply $comment) {
 
   return response()->json(['message' => 'Reply deleted successfully']);
 });
+
+Route::put('/comment/{comment}', function (Comment $comment) {
+
+  $validated = request()->validate([
+    'comment' => 'required|max:100'
+  ]);
+
+  Gate::authorize('update', $comment);
+
+  $comment->comment = $validated['comment'];
+  $comment->save();
+
+  return response()->json(['message' => 'Comment updated successfully']);
+});
+
+Route::put('/reply/{reply}', function (Reply $comment) {
+  $validated = request()->validate([
+    'reply' => 'required|max:100'
+  ]);
+
+  Gate::authorize('update', $comment);
+
+  return response()->json(['message' => 'Reply deleted successfully']);
+});

@@ -35,9 +35,14 @@ class ReplyPolicy
   /**
    * Determine whether the user can update the model.
    */
-  public function update(User $user, Reply $reply): bool
+  public function update(User $user, Reply $reply)
   {
-    return false;
+    return $reply->user()->is($user) ? Response::allow() : Response::deny('You can not update this reply');
+  }
+
+  public function edit(User $user, Reply $reply): bool
+  {
+    return $reply->user()->is($user);
   }
 
   /**

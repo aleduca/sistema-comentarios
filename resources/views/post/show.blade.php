@@ -10,76 +10,22 @@
     @if(session('success'))
       <div class="text-green-600 italic text-sm">{{ session('success') }}</div>
     @endif
-    <form class="mb-6" action={{ route('comment.store',$post->id) }} method="post">
-        @csrf
-        <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-            @error('comment') <span class="text-red-500 italic text-sm">{{$message}}</span> @enderror
-            <label for="comment" class="sr-only">Your comment</label>
-            <textarea id="comment" rows="6" name="comment"
-                class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
-                placeholder="Write a comment..."></textarea>
-        </div>
-        <button type="submit"
-            class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 cursor-pointer">
-            Post comment
-        </button>
-    </form>
+    <x-create-comment :post="$post" />
     @forelse($post->comments as $comment)
     <article class="p-6 text-base bg-white rounded-lg dark:bg-gray-900" id="comment-{{ $comment->id }}" x-data="comments('comment')">
-          <template x-if="loading">
-          <div class="text-white text-sm italic">Aguarde...</div>
-        </template>
-        <footer class="flex justify-between items-center mb-2 relative">
-            <div class="flex items-center">
-                <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold"><img
-                        class="mr-2 w-6 h-6 rounded-full"
-                        src="{{ $comment->user->photo }}"
-                        alt="Michael Gough">{{$comment->user->fullName}}</p>
-                <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate datetime="2022-02-08"
-                        title="{{ $comment->created_at->translatedFormat('d/F/Y H:i:s') }}">{{ $comment->created_at->translatedFormat('d/F/Y H:i:s') }}</time></p>
-            </div>
-            <button id="dropdownComment1Button"
-            @click="openDropdown = !openDropdown"
-            data-dropdown-toggle="dropdownComment1"
-                class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 bg-white rounded-lg hover:bg-gray-100  dark:bg-gray-900 dark:hover:bg-gray-700 outline-none cursor-pointer"
-                type="button">
-                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                    <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-                </svg>
-                <span class="sr-only">Comment settings</span>
-            </button>
-            <!-- Dropdown menu -->
-            <x-dropdown-comments :comment="$comment" />
-        </footer>
-        <p class="text-gray-500 dark:text-gray-400">{{ $comment->comment }}</p>
+      <template x-if="loading">
+        <div class="text-white text-sm italic">Aguarde...</div>
+      </template>
+      <x-comment :comment="$comment" />
+      <x-comment-edit :comment="$comment" />
     </article>
     @foreach($comment->replies as $reply)
     <article class="p-6 mb-3 ml-6 lg:ml-12 text-base bg-white rounded-lg dark:bg-gray-900" id="reply-{{ $reply->id }}" data-parent-id="{{ $comment->id }}" x-data="comments('reply')">
         <template x-if="loading">
           <div class="text-white text-sm italic">Aguarde...</div>
         </template>
-        <footer class="flex justify-between items-center mb-2 relative">
-            <div class="flex items-center">
-                <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold"><img
-                        class="mr-2 w-6 h-6 rounded-full"
-                        src="{{ $reply->user->photo }}"
-                        alt="Jese Leos">{{ $reply->user->fullName }}</p>
-                <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate datetime="2022-02-12"
-                        title="{{ $reply->created_at->translatedFormat('d/F/Y H:i:s') }}">{{ $reply->created_at->translatedFormat('d/F/Y H:i:s') }}</time></p>
-            </div>
-            <button id="dropdownComment2Button" data-dropdown-toggle="dropdownComment2"
-            @click="openDropdown = !openDropdown"
-            class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-40 bg-white rounded-lg hover:bg-gray-100 outline-none cursor-pointer  dark:bg-gray-900 dark:hover:bg-gray-700"
-            type="button">
-            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-              <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-            </svg>
-            <span class="sr-only">Comment settings</span>
-          </button>
-            <!-- Dropdown menu -->
-            <x-dropdown-comments :comment="$reply" />
-        </footer>
-        <p class="text-gray-500 dark:text-gray-400">{{ $reply->reply }}</p>
+        <x-reply :reply="$reply" />
+        <x-reply-edit :reply="$reply" />
     </article>
     @endforeach
     @empty

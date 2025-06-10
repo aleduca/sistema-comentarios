@@ -35,9 +35,14 @@ class CommentPolicy
   /**
    * Determine whether the user can update the model.
    */
-  public function update(User $user, Comment $comment): bool
+  public function update(User $user, Comment $comment)
   {
-    return false;
+    return $comment->user()->is($user) ? Response::allow() : Response::deny('You can not update this comment');
+  }
+
+  public function edit(User $user, Comment $comment): bool
+  {
+    return $comment->user()->is($user);
   }
 
   /**
