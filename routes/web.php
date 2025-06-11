@@ -71,8 +71,8 @@ Route::put('/reply/{reply}', function (Reply $reply) {
 
 Route::post('/reply-comment', function () {
   $validated = request()->validate([
-    'comment_id' => 'string',
-    'post_id' => 'string',
+    'comment_id' => 'required',
+    'post_id' => 'required',
     'reply' => 'required|max:100'
   ]);
 
