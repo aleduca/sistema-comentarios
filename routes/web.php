@@ -68,3 +68,20 @@ Route::put('/reply/{reply}', function (Reply $reply) {
 
   return response()->json(['message' => 'Reply deleted successfully']);
 });
+
+Route::post('/reply-comment', function () {
+  $validated = request()->validate([
+    'comment_id' => 'string',
+    'post_id' => 'string',
+    'reply' => 'required|max:100'
+  ]);
+
+  Reply::create([
+    'comment_id' => $validated['comment_id'],
+    'post_id' => $validated['post_id'],
+    'user_id' => Auth::id(),
+    'reply' => $validated['reply']
+  ]);
+
+  return response()->json(['message' => 'Reply successfully']);
+});

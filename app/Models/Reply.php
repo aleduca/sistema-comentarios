@@ -11,6 +11,13 @@ class Reply extends Model
   /** @use HasFactory<\Database\Factories\ReplyFactory> */
   use HasFactory;
 
+  protected $fillable = [
+    'comment_id',
+    'post_id',
+    'user_id',
+    'reply'
+  ];
+
   public function post(): BelongsTo
   {
     return $this->belongsTo(Post::class, 'post_id');
